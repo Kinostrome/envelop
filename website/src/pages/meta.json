@@ -13,8 +13,8 @@
       "toc": true
     }
   },
-  "tutorial": {
-    "title": "Plugin Hub",
+  "plugins": {
+    "title": "Plugins Hub",
     "type": "page",
     "theme": {
       "toc": true
