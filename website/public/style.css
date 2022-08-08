@@ -1,4 +1,4 @@
-code[class*='language-'],
+/* code[class*='language-'],
 pre[class*='language-'] {
   white-space: pre-wrap !important;
   word-break: break-word !important;
@@ -19,4 +19,7 @@ article {
 
 .plugins-list td:first-child {
   min-width: 60px;
-}
+} */
+
+@tailwind components;
+@tailwind utilities;
