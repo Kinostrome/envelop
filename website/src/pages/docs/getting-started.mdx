@@ -1,18 +1,21 @@
----
-title: First Steps
----
+import { PackageCmd, Callout } from '@theguild/components'
 
-Using Envelop is straight-forward and intuitive, in this section you will lean how to install and set up an GraphQL server using Envelop from scratch.
+# First Steps
 
-> In case you are being referred to the Envelop documentation from a framework or library that implements envelop, you can straight dive into the [Plugin Hub](/plugins) or head over to the [Plugin Tutorial](/docs/plugins) for learning how to write your own plugins.
+Using Envelop is straight-forward and intuitive, in this section you will learn how to install and set up a GraphQL server using Envelop from scratch.
 
+<Callout type="info">
+  In case you are being referred to the Envelop documentation from a framework or library that implements envelop, you
+  can straight dive into the [Plugin Hub](/plugins) or head over to the [Plugin Tutorial](/docs/plugins) for learning
+  how to write your plugins.
+</Callout>
 ## Installation
 
 Start by adding the core of `envelop` and `graphql` to your codebase.
 
-<PackageInstall packages="graphql @envelop/core" />
+<PackageCmd packages={['graphql @envelop/core']} />
 
-## Create your first envelop
+## Create Your First Envelop
 
 After installing the `@envelop/core` package, you can use the `envelop` function for creating your `getEnveloped` function. We use a simple GraphQL schema that we build with the `buildSchema` function from `graphql`.
 
@@ -31,7 +34,7 @@ export const getEnveloped = envelop({
 })
 ```
 
-## Use your envelop
+## Use Your Envelop
 
 The result of `envelop` is a factory function that allows you to get everything you need for the GraphQL execution: `parse`, `validate`, `contextBuilder`, `execute` and `subscribe`. It is usually named `getEnveloped`.
 
@@ -49,13 +52,13 @@ const {
 } = getEnveloped()
 ```
 
-## Add plugins to your envelop
+## Add Plugins to Your Envelop
 
-After you set up your base envelop, you can start customizing your GraphQL server. Adding new functionality is as easy as adding a new envelop plugin to your base envelop setup.
+After you set up your base Envelop, you can start customizing your GraphQL server. Adding new functionality is as easy as adding a new envelop plugin to your base envelop setup.
 
-Let's add a parser and validation cache, so sending the same operation string sent to our server is cached using a LRU cache, allowing to improve the overall performance of the GraphQL execution layer.
+Let's add a parser and validation cache, so sending the same operation string sent to our server is cached using an LRU cache, allowing us to improve the overall performance of the GraphQL execution layer.
 
-<PackageInstall packages="@envelop/parser-cache @envelop/validation-cache" />
+<PackageCmd packages={['@envelop/parser-cache @envelop/validation-cache']} />
 
 ```ts
 import { envelop, useSchema } from '@envelop/core'
@@ -79,9 +82,9 @@ const getEnveloped = envelop({
 })
 ```
 
-> A list of all available plugins can be found on the [Envelop Plugin Hub](/plugins).
+<Callout type="info">A list of all available plugins can be found on the [Envelop Plugin Hub](/plugins).</Callout>
 
-## Use your envelop with an HTTP server
+## Use Your Envelop With an HTTP Server
 
 you can build a very simple GraphQL HTTP server from scratch, by using the Node.js `http` module and only these functions.
 
@@ -154,4 +157,9 @@ curl \
   http://localhost:3000
 ```
 
-> This example uses the Node.js `http` module and is a very simplified handler that does not strictly follow the [GraphQL over HTTP specification](https://github.com/graphql/graphql-over-http) as it does not handle headers or respect HTTP methods. For actual production usage we recommend using Envelop with one of the popular and battle-tested HTTP frameworks and servers. Check the examples on our [Integrations page](/docs/integrations).
+<Callout type="info">
+  This example uses the Node.js `HTTP` module and is a very simplified handler that does not strictly follow the
+  [GraphQL over HTTP specification](https://github.com/graphql/graphql-over-http) as it does not handle headers or
+  respect HTTP methods. For actual production usage, we recommend using Envelop with one of the popular and
+  battle-tested HTTP frameworks and servers. Check the examples on our [Integrations page](/docs/integrations).
+</Callout>

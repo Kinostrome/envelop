@@ -1,12 +1,12 @@
----
-title: '@envelop/core'
----
+import { Callout } from '@theguild/components'
 
-This is the core package for `envelop`, it comes with the execution pipeline wrapper, and some basic core plugins you can use for creating your initial Envelop instance.
+# @envelop/core
 
-### Built-in plugins
+This is the core package for `envelop`, it comes with the execution pipeline wrapper and some basic core plugins you can use for creating your initial Envelop instance.
 
-#### useSchema
+## Built-in plugins
+
+### useSchema
 
 This plugin is the simplest plugin for specifying your GraphQL schema. You can specify a schema created from any tool that emits `GraphQLSchema` object.
 
@@ -24,9 +24,9 @@ const getEnveloped = envelop({
 })
 ```
 
-#### useAsyncSchema
+### useAsyncSchema
 
-This plugin is the simplest plugin for specifying your GraphQL schema, but in an async way.
+This plugin is the simplest plugin for specifying your GraphQL schema but in an async way.
 
 If you are using a framework that creates the schema in an async way, you can either use this plugin, or `await` for the schema and then use `useSchema`.
 
@@ -46,9 +46,9 @@ const getEnveloped = envelop({
 })
 ```
 
-#### useErrorHandler
+### useErrorHandler
 
-This plugin invokes a custom function with the every time execution encounters an error.
+This plugin invokes a custom function every time execution encounters an error.
 
 ```ts
 import { envelop, useErrorHandler } from '@envelop/core'
@@ -57,16 +57,19 @@ import { buildSchema } from 'graphql'
 const getEnveloped = envelop({
   plugins: [
     useErrorHandler(error => {
-      // This callback is called per each GraphQLError emitted during execution phase
+      // This callback is called per each GraphQLError emitted during the execution phase
     })
     // ... other plugins ...
   ]
 })
 ```
 
-> **Note:** The handler is invoked for each error. So an execution result with multiple errors will yield multiple calls.
+<Callout type="info">
+  **Note:** The handler is invoked for each error. So an execution result with multiple errors will yield multiple
+  calls.
+</Callout>
 
-#### useExtendContext
+### useExtendContext
 
 Easily extends the context with custom fields.
 
@@ -88,7 +91,7 @@ const getEnveloped = envelop({
 })
 ```
 
-#### useLogger
+### useLogger
 
 Logs parameters and information about the execution phases. You can easily plug in your custom logger.
 
@@ -109,11 +112,11 @@ const getEnveloped = envelop({
 })
 ```
 
-#### usePayloadFormatter
+### usePayloadFormatter
 
 Allow you to format/modify the execution result payload before returning it to your consumer.
 
-The second argument `executionArgs` provides additional information for your formatter. It consists of contextValue, variableValues, document, operationName, and other properties.
+The second argument `executionArgs` provides additional information for your formatter. It consists of `contextValue`, `variableValues`, `document`, `operationName`, and other properties.
 
 ```ts
 import { envelop, usePayloadFormatter } from '@envelop/core'
@@ -130,7 +133,7 @@ const getEnveloped = envelop({
 })
 ```
 
-#### useTiming
+### useTiming
 
 It's a simple time metric collection for every phase in your execution. You can easily customize the behavior of each timing measurement. By default, the timing is printed to the log, using `console.log`.
 
@@ -155,7 +158,7 @@ const getEnveloped = envelop({
 })
 ```
 
-#### useMaskedErrors
+### useMaskedErrors
 
 Prevent unexpected error messages from leaking to the GraphQL API consumers.
 
@@ -194,9 +197,9 @@ const getEnveloped = envelop({
 })
 ```
 
-### Utilities
+## Utilities
 
-#### enableIf
+### enableIf
 
 This utility is helpful when you want to enable a plugin only when a certain condition is met.
 
