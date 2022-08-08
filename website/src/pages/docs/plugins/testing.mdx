@@ -1,21 +1,20 @@
----
-title: Testing
-sidebar_label: Testing
----
+import { PackageCmd, Callout } from '@theguild/components'
 
-Envelop comes with a dedicated package for testing purposes. You can use it to test your plugin or your whole envelop, by replacing or mocking other plugins / phases.
+# Testing
 
-The Envelop testkit can also help you to test your envelop plugins in a headless envrionment, so you don't need to deal with HTTP or anything else.
+Envelop comes with a dedicated package for testing purposes. You can use it to test your plugin or you are whole Envelop, by replacing or mocking other plugins/phases.
 
-To get stated with the Envelop testkit, make sure to install it in your project (as a `devDependency`):
+The Envelop Testkit can also help you to test your Envelop plugins in a headless environment, so you don't need to deal with HTTP or anything else.
 
-    yarn add -D @envelop/testing
+To get started with the Envelop Testkit, make sure to install it in your project (as a `devDependency`):
+
+<PackageCmd packages={['-D @envelop/testing']} />
 
 To get started with your `envelop` testing, make sure first to setup your favorite test runner in your project (we use [Jest](https://jestjs.io/)).
 
-## Testing a plugin
+## Testing a Plugin
 
-To test a plugin in a real GraphQL environment, just create a testkit envelop:
+To test a plugin in a real GraphQL environment, just create a Testkit Envelop:
 
 ```ts
 import { useMyPlugin } from './my-plugin'
@@ -37,9 +36,9 @@ describe('My Plugin', () => {
 })
 ```
 
-## Testing Envelop instance
+## Testing Envelop Instance
 
-You can also pass a complete instance of `envelop` (the `getEnveloped` function) to your testkit, and run the same testing flow for multiple plugins together:
+You can also pass a complete instance of `envelop` (the `getEnveloped` function) to your Testkit, and run the same testing flow for multiple plugins together:
 
 ```ts
 import { getEnveloped } from './my-app'
@@ -65,12 +64,12 @@ describe('My GQL App', () => {
 
 ### Manipulating Envelops
 
-If you are testing a complete `envelop`, you might want to manipulate the envelop before executing it (for example, to replace a context function that authenticate the user, or to create a scenario needed for testing).
+If you are testing a complete `envelop`, you might want to manipulate the Envelop before executing it (for example, to replace a context function that authenticates the user, or to create a scenario needed for testing).
 
-You can use `modifyPlugins` in order to modify the plugins that are part of your execution:
+You can use `modifyPlugins` to modify the plugins that are part of your execution:
 
 ```ts
-// Create a testkit based on the envelop, with a dummy schema
+// Create a Testkit based on the Envelop, with a dummy schema
 const testkit = createTestkit(getEnveloped, mySchema)
 // Modify the envelop's plugins
 testkit.modifyPlugins(plugins => [...plugins, somePlugins])
@@ -78,15 +77,17 @@ testkit.modifyPlugins(plugins => [...plugins, somePlugins])
 const result = await testkit.execute(`query testQuery { foo }`)
 ```
 
-> You can either add plugins, but also replace/remove plugins that are not needed during testing.
+<Callout type="info">
+  You can either add plugins, but also replace/remove plugins that are not needed during testing.
+</Callout>
 
 ### Mocking Phases
 
 If you need to make sure that a specific phase of `envelop` will perform a specific result, you can replace the entire phase with a custom one.
 
-This is useful if you need to prepare with a specific scenario before running your envelop, without the need to deal with specific plugins.
+This is useful if you need to prepare with a specific scenario before running your Envelop, without the need to deal with specific plugins.
 
-Here's an example for replacing the whole context building phase:
+Here's an example for replacing the whole context-building phase:
 
 ```ts
 // Create a testkit based on the envelop, with a dummy schema
@@ -102,7 +103,7 @@ testkit.mockPhase({
 })
 ```
 
-> Note: Replacing whole phases might effect plugins execution, so use it carefully!
+<Callout type="info">**Note**: Replacing whole phases might affect plugin execution, so use it carefully!</Callout>
 
 ### Spying On Phases
 

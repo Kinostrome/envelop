@@ -4,5 +4,6 @@
   "integrations": "Integrations and Examples",
   "core": "@envelop/core",
   "composing-envelop": "Sharing Envelops",
-  "tracing": "Tracing"
+  "tracing": "Tracing",
+  "plugins": "Plugins"
 }

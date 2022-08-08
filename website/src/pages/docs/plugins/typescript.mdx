@@ -1,13 +1,10 @@
----
-title: TypeScript Support
-sidebar_label: TypeScript Support
----
+# TypeScript Support
 
-If you are using TypeScript with `envelop`, you can leverage the ability to infer types, and have complete type-safety.
+If you are using TypeScript with `envelop`, you can leverage the ability to infer types and have complete type safety.
 
-### For Plugin developers
+## For Plugin Developers
 
-As a plugin developer, you can define the `context` properties you are contributing. This will make sure to follow across execution of your plugin, and you can leverage type-safety across all hooks.
+As a plugin developer, you can define the `context` properties you are contributing. This will make sure to follow across the execution of your plugin, and you can leverage type-safety across all hooks.
 
 ```ts
 export const useMyPlugin = (): Plugin<{ myContext: string }> => {
@@ -22,7 +19,7 @@ export const useMyPlugin = (): Plugin<{ myContext: string }> => {
 }
 ```
 
-### For Plugins users
+## For Plugins Users
 
 As a user of a plugin, you get type-inference based on the plugins that you use, for example:
 
