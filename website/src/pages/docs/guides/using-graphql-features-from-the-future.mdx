@@ -1,9 +1,3 @@
----
-title: Using GraphQL Features from the Future
-sidebar_label: Using GraphQL Features from the Future
-type: Guide
----
-
 # Using GraphQL Features from the Future
 
 Envelop allows to hook into and extend all phases of the GraphQL execution pipeline.
@@ -43,7 +37,7 @@ type Mutation {
 }
 ```
 
-The community expressed their needs for a way of describing such polymorphic inputs and three RFCs popped up:
+The community expressed their need for a way of describing such polymorphic inputs and three RFCs popped up:
 
 - [Input Objects accepting exactly @oneField](https://github.com/graphql/graphql-spec/pull/586)
 - [Tagged type](https://github.com/graphql/graphql-spec/pull/733)
@@ -86,7 +80,7 @@ type Mutation {
 }
 ```
 
-Which means for the following operation:
+This means for the following operation:
 
 ```graphql
 mutation GeometryCreateMutation($input: GeometryCreateInput!) {
@@ -141,7 +135,7 @@ While the following input would be invalid and not pass the validation phase:
 }
 ```
 
-Adding support to the existing envelop setup is straight-forward:
+Adding support to the existing envelop setup is straightforward:
 
 ```ts
 import { envelop } from '@envelop/core'
@@ -157,7 +151,7 @@ const getEnveloped = envelop({
 })
 ```
 
-As there are developers using either the SDL first or code first approach envelop supports both ways.
+As developers are using either the SDL first or code first approach envelop supports both ways.
 
 SDL first via the `@oneOf` directive.
 
@@ -226,7 +220,7 @@ const GraphQLGeometryCreateInput = new GraphQLInputObjectType({
 ## Fragment Arguments
 
 Mutations, Subscriptions and Queries can have variable definitions today.
-For fragments a way of passing down variables in capsulated way is impossible.
+For fragments a way of passing down variables in a capsulated way is impossible.
 If you use variables in fragments today they always refer to the global variables object, which limits flexibility.
 
 ```graphql

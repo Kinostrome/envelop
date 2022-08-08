@@ -1,17 +1,12 @@
----
-title: Integrating with databases
-sidebar_label: Integrating with databases
----
+# Integrating with Databases
 
-# Integrating with databases
-
-Working with a database with graphql can sometimes be a little difficult and some principles have to be followed
+Working with a database with GraphQL can sometimes be a little difficult and some principles have to be followed
 to avoid performance or safety issues.
 
-In this guide, we will cover few advices to work with databases. The examples will use postgres node client but
-the concepts is applicable to every database.
+In this guide, we will cover a few pieces of advice to work with databases. The examples will use the Postgres node client but
+the concepts apply to every database.
 
-## Use only one client per request
+## Use Only One Client Per Request
 
 The first common error is to use a connection pool directly in the resolvers.
 
@@ -28,7 +23,7 @@ const resolvers = {
 }
 ```
 
-In this example, you can very quickly totally starve your api with a simple request :
+In this example, you can very quickly starve your API with a simple request :
 
 ```graphql
 {
@@ -38,12 +33,12 @@ In this example, you can very quickly totally starve your api with a simple requ
 }
 ```
 
-Because we use directly the pool of connection, each resolver will request a client to do its request.
-If you have, for example 100 bills, this request can starve the connection pool for other users.
-The server will be stuck and unresponsive for any incoming request while it is not fully resolved.
+Because we use directly the pool of connections, each resolver will request a client to do its request.
+If you have, for example, 100 bills, this request can starve the connection pool for other users.
+The server will be stuck and unresponsive to any incoming request while it is not fully resolved.
 
-The better way to avoid this is to open only one client per request. With envelop, we can easily create
-a plugin which adds a client to the context add release it at the end of the request execution.
+The better way to avoid this is to open only one client per request. With Envelop, we can easily create
+a plugin that adds a client to the context add releases it at the end of the request execution.
 
 ```ts
 import { isAsyncIterable } from '@envelop/core'
@@ -77,12 +72,12 @@ const getEnvelop = envelop({
 })
 ```
 
-## Wrap every request in a transaction
+## Wrap Every Request In a Transaction
 
-Now that we have one uniq client during all the execution phase, we can add some fancy features.
+Now that we have one unique client during the execution phase, we can add some fancy features.
 
-For more safety, every mutations should be encapsulated in a transaction. Doing it by hand is difficult,
-error prone and easy to forget. The better way to do it is to automatically wrap every mutation in transaction.
+For more safety, every mutation should be encapsulated in a transaction. Doing it by hand is difficult,
+error-prone and easy to forget. The better way to do it is to automatically wrap every mutation in a transaction.
 
 Let's see how we can change our plugin to implement this.
 
@@ -112,10 +107,10 @@ const databaseClientPlugin = {
 }
 ```
 
-## Enforcing read only queries
+## Enforcing Read-only Queries
 
-Now that we are able to wrap every request in a transaction, we can do even better.
-For now we, are making a transaction for every requests, but only mutations should need one.
+Now that we can wrap every request in a transaction, we can do even better.
+For now, we are making a transaction for every request, but only mutations should need one.
 
 We can configure transactions differently between query and mutation.
 
@@ -151,15 +146,15 @@ const databaseClientPlugin = {
 }
 ```
 
-## Transactions over multiple databases
+## Transactions Over Multiple Databases
 
-Some severs will need to do some modifications on multiple databases in a single mutation.
+Some servers will need to do some modifications on multiple databases in a single mutation.
 
-We could just add our new client and just begin/release/rollback as usual. But what happen if an error occur
-during the commit of the second database ? You will have data updated in the first database, and data rollbacked
-in the second one, causing the system to be in a inconsistent state.
+We could just add our new client and just begin/release/rollback as usual. But what happens if an error occurs
+during the commit of the second database? You will have data updated in the first database, and data rollbacked
+in the second one, causing the system to be in an inconsistent state.
 
-To solve this we can use Tow Phase Commit, which is supported by most of databases except few ones...
+To solve this we can use Tow Phase Commit, which is supported by most databases except a few ones...
 (yes I'm looking at you Mongo).
 
 ```ts

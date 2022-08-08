@@ -1,20 +1,14 @@
----
-title: Securing your GraphQL API
-sidebar_label: Securing your GraphQL API
-type: Guide
----
-
 # Securing your GraphQL API
 
 Building a secure GraphQL API is hard by design because of the "Graph" nature of GraphQL.
 Libraries for making different aspects of a GraphQL server secure have existed since the early days of GraphQL.
 However, combining those tools is often cumbersome and results in messy code.
-With envelop securing your server is now as easy as pie!
+With Envelop securing your server is now as easy as pie!
 
 ## Authentication
 
 Authentication is the process of identifying who is doing a request against your server.
-Rolling out your own authentication solution is a crucial and important task as any flaws can result in severe security issues.
+Rolling out your authentication solution is a crucial task as any flaws can result in severe security issues.
 
 ### Auth0
 
@@ -51,13 +45,13 @@ const getEnveloped = envelop({
 ```
 
 On the client you just need to add the `Authorization: Bearer <auth_token>` header and you are good!
-For a full hands on guide for setting things up check out our [Adding Authentication with Auth0 guide](/docs/adding-authentication-with-auth0).
+For a full hands-on guide for setting things up check out our [Adding Authentication with Auth0 guide](/docs/adding-authentication-with-auth0).
 
 Check out the [Auth0 Envelop plugin](/plugins/use-auth0) for all possible configuration options.
 
 ### Generic Auth
 
-In some cases using a third party auth provider is not possible. But now worries, the generic auth plugin has you covered!
+In some cases using a third-party auth provider is not possible. But no worries, the generic auth plugin has you covered!
 [Learn more over here](/plugins/use-generic-auth)
 
 ## Authorization
@@ -71,11 +65,11 @@ Most of the time this logic should be applied within your business logic that is
 
 Right now envelop ships with two plugins that allow applying authorization before the execution phase.
 
-### Schema based on context
+### Schema Based on Context
 
 With the `useLazyLoadedSchema` plugin it is possible to dynamically select a schema for execution based on the context object. This is handy if you have a public schema (e.g. for third-party API consumers) and a private schema (for in-house API consumers).
 
-Libraries such as [`graphql-public-schema-filter`](https://github.com/n1ru4l/graphql-public-schema-filter) can be used for generating a schema with only access to a sub part of the original schema using either SDL directives or schema field extensions.
+Libraries such as [`graphql-public-schema-filter`](https://github.com/n1ru4l/graphql-public-schema-filter) can be used for generating a schema with only access to a sub-part of the original schema using either SDL directives or schema field extensions.
 
 ```ts
 import { envelop, useLazyLoadedSchema } from '@envelop/core'
@@ -89,11 +83,11 @@ const getEnveloped = envelop({
 })
 ```
 
-### Allow-list operation fields
+### Allow-list Operation Fields
 
 With the `useOperationFieldPermissions` plugin you can automatically reject GraphQL operations that include specific field selections within the operations selection set. It works by extracting a set of [schema coordinates](https://github.com/graphql/graphql-spec/pull/746) from the context object. A custom validation rule will verify whether the selection only includes allowed selections and prevent the execution of the operation if it encounters any prohibited selections.
 
-This plugin is perfect for use-cases where you want the whole schema being introspectable, but restrict access to a certain part of the Graph only to specific users. E.g. in a payment subscription model, where API users should only have access to the data that is included within the plan.
+This plugin is perfect for use-cases where you want the whole schema to be introspectable, but restrict access to a certain part of the Graph only to specific users. E.g. in a paid subscription model, where API users should only have access to the data that is included within the plan.
 
 ```ts
 import { envelop, useSchema } from '@envelop/core'
@@ -121,7 +115,7 @@ query {
 
 would result in the following error:
 
-**Response**
+#### Response
 
 ```json
 {
@@ -140,13 +134,13 @@ would result in the following error:
 }
 ```
 
-## Prevent leaking sensitive Information
+## Prevent Leaking Sensitive Information
 
 ### Error Masking
 
-In most GraphQL servers any thrown error or rejected promise will result in the original error leaking to the outside world. Some frameworks have custom logic for catching unexpected errors and mapping them to an unexpected error instead. With envelop this abstraction is now possible with any server! Just add the [`useMaskedErrors`](https://www.envelop.dev/plugins/use-masked-errors) plugin and throw `EnvelopError` instances for expected errors that should leak to the outside world. You can also add custom extension fields that will also be sent to the clients.
+In most GraphQL servers any thrown error or rejected promise will result in the original error leaking to the outside world. Some frameworks have custom logic for catching unexpected errors and mapping them to an unexpected error instead. With Envelop this abstraction is now possible with any server! Just add the [`useMaskedErrors`](https://www.envelop.dev/plugins/use-masked-errors) plugin and throw `EnvelopError` instances for expected errors that should leak to the outside world. You can also add custom extension fields that will also be sent to the clients.
 
-```tsx
+```ts
 import { envelop, useSchema, useMaskedErrors, EnvelopError } from '@envelop/core'
 import { makeExecutableSchema } from 'graphql'
 
@@ -181,7 +175,7 @@ const getEnveloped = envelop({
 })
 ```
 
-For people migrating from apollo-server the [`useApolloServerErrors`](/plugins/use-apollo-server-errors) plugin provides full backwards-compatibility to how apollo-server handles GraphQL error masking.
+For people migrating from apollo-server the [`useApolloServerErrors`](/plugins/use-apollo-server-errors) plugin provides full backward-compatibility to how apollo-server handles GraphQL error masking.
 
 ### Disable Schema Introspection
 
@@ -200,9 +194,9 @@ However, just disabling introspection is not enough as graphql.js by default pro
 
 Thus we rather recommend using persisted operations instead of disabling schema introspection.
 
-## Protection against malicious GraphQL operations
+## Protection Against Malicious GraphQL Operations
 
-One of the main benefits of GraphQL is that data can be requested individually. However, this also introduces the possibility for attackers to send operations with deeply nested selection sets that could block other requests being processed. Fortunately, infinite loops are not possible by design as a fragment cannot self-reference itself. Unfortunately, that still does not prevent possible attackers from sending selection sets that are hundreds of levels deep.
+One of the main benefits of GraphQL is that data can be requested individually. However, this also introduces the possibility for attackers to send operations with deeply nested selection sets that could block other requests from being processed. Fortunately, infinite loops are not possible by design as a fragment cannot self-reference itself. Unfortunately, that still does not prevent possible attackers from sending selection sets that are hundreds of levels deep.
 
 The following schema
 
@@ -286,7 +280,7 @@ const getEnveloped = envelop({
 
 ### Query Depth Limiting
 
-Sometimes persisted operations cannot be used. E.g. if you are building an API that is used by third party users. However, we can still apply some
+Sometimes persisted operations cannot be used. E.g. if you are building an API that is used by third-party users. However, we can still apply some
 protection.
 
 The [`useDepthLimit`](/plugins/use-depth-limit) allows a maximum nesting level an operation is allowed to have.
@@ -305,13 +299,13 @@ const getEnveloped = envelop({
 })
 ```
 
-This can prevent malicious API users executing GraphQL operations with deeply nested selection sets. You need to tweak the maximum depth an operation selection set is allowed to have based on your schema and needs, as it could vary between users.
+This can prevent malicious API users from executing GraphQL operations with deeply nested selection sets. You need to tweak the maximum depth an operation selection set is allowed to have based on your schema and needs, as it could vary between users.
 
 ### Rate Limiting
 
-Rate-limiting is a common practice with APIs, and with GraphQL it gets more complicated because of the flexibility of the graph and the ability to choose what fields to query.
+Rate-limiting is common practice with APIs, and with GraphQL it gets more complicated because of the flexibility of the graph and the ability to choose what fields to query.
 
-The [`useRateLimiter`](/plugins/use-rate-limiter) to limit access to resources, by a field level.
+The [`useRateLimiter`](/plugins/use-rate-limiter) limits access to resources, by a field level.
 
 ```ts
 import { envelop } from '@envelop/core'

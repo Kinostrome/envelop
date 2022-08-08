@@ -1,26 +1,24 @@
----
-title: Adding Authentication with Auth0
-sidebar_label: Adding Authentication with Auth0
-type: Guide
----
+import { PackageCmd } from '@theguild/components'
 
-Authentication in the process of identifying who is trying to access our API. Building our own solution can be hard and cause severe security issue if done wrong. In recent years third-party authentication providers became quite popular. One of those is Auth0, which comes with an exceptional free plan allowing up to 7.000 active users and unlimited logins, making it one of the best available solutions for getting started.
+# Adding Authentication with Auth0
+
+Authentication in the process of identifying who is trying to access our API. Building our solution can be hard and cause a severe security issue if done wrong. In recent years third-party authentication providers became quite popular. One of those is Auth0, which comes with an exceptional free plan allowing up to 7.000 active users and unlimited logins, making it one of the best available solutions for getting started.
 
 In this guide we will go through all the steps required for integrating authentication into an existing envelop setup using the [`@envelop/auth0`](https://www.envelop.dev/plugins/use-auth0) package.
 
 ## Prerequisites
 
-Ideally, you already have your basic envelop setup with your http framework of choice. This guide we will be based on the [`graphql-helix` fastify example](https://github.com/n1ru4l/envelop/tree/main/examples/graphql-helix), but the code can be easily transferred to any other example as listed on our [Integrations and Examples documentation](/docs/integrations). In case you are hitting any roadblocks feel free to reach out to us via the chat box on this page! The full code of the end-result is also available in our examples [`graphql-helix-auth0` fastify example](https://github.com/n1ru4l/envelop/tree/main/examples/graphql-helix-auth0).
+Ideally, you already have your basic envelop setup with your HTTP framework of choice. This guide will be based on the [`graphql-helix` fastify example](https://github.com/n1ru4l/envelop/tree/main/examples/graphql-helix), but the code can be easily transferred to any other example as listed on our [Integrations and Examples documentation](/docs/integrations). In case you are hitting any roadblocks feel free to reach out to us via the chat box on this page! The full code of the end-result is also available in our examples [`graphql-helix-auth0` fastify example](https://github.com/n1ru4l/envelop/tree/main/examples/graphql-helix-auth0).
 
-## Installing dependencies
+## Installing Dependencies
 
 We start by installing the package into our envelop setup with your favorite Package manager.
 
 import { PackageInstall } from '@guild-docs/client'
 
-<PackageInstall packages="@envelop/auth0" />
+<PackageCmd packages={['@envelop/auth0']} />
 
-## Adding the Auth0 Plugin to the Envelop setup
+## Adding The Auth0 Plugin to The Envelop Setup
 
 ```ts
 import { useAuth0 } from '@envelop/auth0'
@@ -45,13 +43,13 @@ Let's break down the code. There are several configuration options we need to pa
 
 **`domain`** The domain of the Auth0 server we need to communicate with for authenticating a user. We will fill this out in the next step.
 
-**`audience`** The audience is the identifier of the API and is forwarded to Auth0 in order to specify for which API we are trying to authenticate our user for. E.g. if our API is hosted on `http://localhost:3000/graphql`, we would pass that value. We will fill this out in the next step.
+**`audience`** The audience is the identifier of the API and is forwarded to Auth0 to specify for which API we are trying to authenticate our user. E.g. if our API is hosted on `http://localhost:3000/graphql`, we would pass that value. We will fill this out in the next step.
 
-**`extendContextField`** Once a user got successfully authenticated the authentication information is added on the context object under this field. In our resolvers we can then access the authentication information via `context.auth?.sub`.
+**`extendContextField`** Once a user got successfully authenticated the authentication information is added to the context object under this field. In our resolvers, we can then access the authentication information via `context.auth?.sub`.
 
-## Setting up the Auth0 API
+## Setting up The Auth0 API
 
-In order to properly configure the `useAuth0` plugin we need the `domain` and `audience` values. We will retrieve them by setting and configuring Auth0 from scratch!
+To properly configure the `useAuth0` plugin we need the `domain` and `audience` values. We will retrieve them by setting and configuring Auth0 from scratch!
 
 If didn't already sign up for Auth0, you should do it now on [Auth0 Sign Up](https://auth0.com/sign-up). Since you can sign up with your GitHub or Google Account it should be super fast!
 
@@ -60,7 +58,7 @@ After logging in navigate to the [Auth0 dashboard](https://manage.auth0.com/dash
 ![Auth0 Dashboard](/assets/guides/adding-authentication-with-auth0/01-dashboard.jpg)
 
 Choose any name for the API, we are going with `Envelop Demo` for this example.
-The `Identifier` field should be set to the URL of our GraphQL API. We are hosting our API on localhost and set it to the host and port on which our fastify helix server is served, which is `http://localhost:3000/graphql`. For production you should instead set it to the URL of the production server.
+The `Identifier` field should be set to the URL of our GraphQL API. We are hosting our API on localhost and set it to the host and port on which our Fastify helix server is served, which is `http://localhost:3000/graphql`. For production, you should instead set it to the URL of the production server.
 
 ![Auth0 API](/assets/guides/adding-authentication-with-auth0/02-create-api.jpg)
 
@@ -74,7 +72,7 @@ The `domain` value is a bit hidden, but we can find it on the detail page of the
 
 ![Auth0 domain](/assets/guides/adding-authentication-with-auth0/04-domain.jpg)
 
-It will vary depending on your account name and region, but in general it follows this pattern
+It will vary depending on your account name and region. But in general, it follows this pattern
 
 ```
 {account_name}.{region}.auth0.com
@@ -105,9 +103,9 @@ We now have all the information needed for configuring the envelop plugin. Howev
 
 But before doing so, let's verify that the plugin is doing what it should do.
 
-## Expose authentication information via GraphQL schema
+## Expose Authentication Information Via GraphQL Schema
 
-Before we start our server we should add some types and fields to our schema in order to query for the authentication information.
+Before we start our server we should add some types and fields to our schema to query for the authentication information.
 The complete code should look like this:
 
 ```ts
@@ -143,7 +141,7 @@ const schema = makeExecutableSchema({
 })
 ```
 
-Then we can start our server. The helix fastify server can be started via `yarn start`.
+Then we can start our server. The helix Fastify server can be started via `yarn start`.
 
 ```
 C:\Users\laurin\Projects\envelop\examples\graphql-helix> yarn start
@@ -168,7 +166,7 @@ As expected the value of the `authInfo` field is `null`, as we are not passing a
 
 ## Generating an Auth0 Access Token
 
-In order to retrieve an access token, we first need to set up an Auth0 application and an authentication route. For the sake of this guide and in order to reduce complexity we will simply add an route to our fastify http server that renders some HTML with a `<script>` tag that invokes the Auth0 JavaScript SDK (referenced via a CDN) and then appends the authentication token to the document body. It should still give you a feeling how you can integrate the Auth0 SDK with your favorite Frontend Framework. If you are using Next.js you should check out [nextjs-auth0](https://github.com/auth0/nextjs-auth0).
+To retrieve an access token, we first need to set up an Auth0 application and an authentication route. For the sake of this guide and to reduce complexity we will simply add a route to our Fastify HTTP server that renders some HTML with a `<script>` tag that invokes the Auth0 JavaScript SDK (referenced via a CDN) and then appends the authentication token to the document body. It should still give you a feeling of how you can integrate the Auth0 SDK with your favorite Frontend Framework. If you are using Next.js you should check out [nextjs-auth0](https://github.com/auth0/nextjs-auth0).
 
 Let's go back into the Auth0 interface on the Applications page.
 
@@ -182,11 +180,11 @@ We will be redirected to the Application detail page.
 
 The first important information we need from there is the Application **Client ID**. We need that string for configuring the Auth0 SDK
 
-On that page we also need to switch to the Settings tab as we will have to adjust our application URL settings. Our application is hosted on `http://localhost:3000`. We will have to set the **Allowed Callback URLs**, **Allowed Logout URLs** and **Allowed Web Origins** setting to that value (`http://localhost:3000`).
+On that page, we also need to switch to the Settings tab as we will have to adjust our application URL settings. Our application is hosted on `http://localhost:3000`. We will have to set the **Allowed Callback URLs**, **Allowed Logout URLs** and **Allowed Web Origins** setting to that value (`http://localhost:3000`).
 
 Don't forget to save the changes with the **Save Changes** button at the end of the page.
 
-Next we add the new route in our fastify setup:
+Next, we add the new route to our Fastify setup:
 
 ```ts
 // ... envelop setup ...
@@ -263,7 +261,7 @@ The full code of this guide can be found in our [Envelop examples](https://githu
 
 More information about advanced configuration options can be found on the [`useAuth0` PluginHub page](/plugins/use-auth0).
 
-In the GraphQL schema of this guide we only re-expose the auth0 authentication information. For a true registration flow the user information should be persisted via a `register` mutation or similar, so additional information such as first and last name is stored within a database.
+In the GraphQL schema of this guide, we only re-expose the auth0 authentication information. For a true registration flow, the user information should be persisted via a `register` mutation or similar, so additional information such as first and last name is stored within a database.
 
 A full user object could be loaded when building the context via the [`useExtendContext` plugin](https://www.envelop.dev/plugins/use-extend-context).
 
