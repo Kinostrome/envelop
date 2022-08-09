@@ -16,9 +16,8 @@
   "plugins": {
     "title": "Plugins Hub",
     "type": "page",
-    "theme": {
-      "toc": true
-    }
+    "href": "https://the-guild.dev/plugins",
+    "newWindow": false
   },
   "contact-us-link": {
     "title": "Contact Us",
